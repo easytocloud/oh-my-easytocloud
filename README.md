@@ -1,8 +1,7 @@
-# oh-my-cloud9
-Upgrade cloud9 to use oh-my-zsh with informative prompt for your terminal
+# oh-my-easytocloud
 
-AWS Cloud9 uses bash by default. Comming from a Mac I am now used to zsh and I want to have a consistent experience developing local on my Mac and when using Cloud9. To achive this, one has to install zsh in the Cloud9 environment. And who says zsh says oh-my-zsh, right!?
+oh-my-easytocloud is an oh-my-zsh theme to spice-up your command prompt.
 
-oh-my-zsh uses themes to spice your command promt. Some of the themes require additional fonts. The fonts have to be installed *and* Cloud9 has to be configured to use them
+It is 90% identical to agnoster, just some different collor scheme and support for AWS environments in your prompt.
 
-So here's a quick script to do all of that. It comes with our own theme that puts AWS_DEFAULT_PROFILE and AWS_DEFAULT_ENV in your prompt. These can be set by you, or by a set of our tools that might not be all that relevant in Cloud9.
+AWS environments are part of [aws-profile-organizer](https://github.com/easytocloud/aws-profile-organizer)
