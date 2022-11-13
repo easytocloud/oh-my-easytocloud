@@ -235,10 +235,10 @@ prompt_status() {
 #   ends in '-prod'
 # - displays black on green otherwise
 prompt_aws() {
-  [[ -z "$AWS_DEFAULT_PROFILE" || "$SHOW_AWS_PROMPT" = false ]] && return
-  case "$AWS_DEFAULT_PROFILE" in
-    *main*|*prod*) prompt_segment 9 11 "$(tput setaf white)$(tput blink)AWS: ${AWS_DEFAULT_PROFILE} | ${AWS_DEFAULT_ENV}$(tput sgr0)$(tput setab 9)" ;;
-    *) prompt_segment 11 black "AWS: ${AWS_DEFAULT_PROFILE} | ${AWS_DEFAULT_ENV}" ;;
+  [[ -z "$AWS_PROFILE" || "$SHOW_AWS_PROMPT" = false ]] && return
+  case "$AWS_PROFILE" in
+    *main*|*prod*|*master*) prompt_segment 9 11 "$(tput setaf white)$(tput blink)AWS: ${AWS_PROFILE} | ${AWS_ENV}$(tput sgr0)$(tput setab 9)" ;;
+    *) prompt_segment 11 black "AWS: ${AWS_PROFILE} | ${AWS_ENV}" ;;
   esac
 }
 
