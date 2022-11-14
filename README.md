@@ -2,7 +2,7 @@
 
 oh-my-easytocloud is an oh-my-zsh theme to spice-up your command prompt.
 
-It is 90% identical to agnoster, just some different color scheme and support for AWS environments in your prompt.
+It is 95% identical to agnoster, just some different color scheme and support for AWS environments in your prompt.
 
 AWS environments are part of [aws-profile-organizer](https://github.com/easytocloud/aws-profile-organizer)
 
