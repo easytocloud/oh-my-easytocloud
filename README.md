@@ -2,14 +2,22 @@
 
 oh-my-easytocloud is an oh-my-zsh theme to spice-up your command prompt.
 
-It is 95% identical to agnoster, just some different color scheme and support for AWS environments in your prompt.
+It is 95% identical to agnoster, just some different color scheme and support for 
+AWS environments in your prompt.
 
 AWS environments are part of [aws-profile-organizer](https://github.com/easytocloud/aws-profile-organizer)
 
 Install the theme in the customs/themes directory of your oh-my-zsh installation (usually in ~/.oh-my-zsh).
 
 ```
-cp themes/easytocloud.zsh-theme ~/.oh-my-zsh/custom/themes
+wget https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme -O ~/.oh-my-zsh/custom/themes/easytocloud.zsh.theme
+```
+
+or first clone this repo and then copy the theme file
+
+```
+git clone https://github.com/easytocloud/oh-my-easytocloud.git
+cp oh-my-easytocloud/themes/easytocloud.zsh-theme ~/.oh-my-zsh/custom/themes
 ```
 
 and enjoy the new information in your prompt.

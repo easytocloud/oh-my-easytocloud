@@ -229,15 +229,20 @@ prompt_status() {
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
 
-#AWS Profile:
-# - display current AWS_PROFILE and AWS_ENV name
-# - displays yellow on red if profile name contains 'prod', 'main' or 'master'
-# - displays black on AWS-yellow otherwise
+# AWS Profile:
+# - display current AWS_PROFILE info
+# - displays yellow on red if profile name contains 'main', 'prod' or 'master'
+# - displays black on (AWS) yellow otherwise
 prompt_aws() {
   [[ -z "$AWS_PROFILE" || "$SHOW_AWS_PROMPT" = false ]] && return
-  case "$AWS_PROFILE" in
-    *main*|*prod*|*master*) prompt_segment 9 11 "$(tput setaf white)$(tput blink)AWS: ${AWS_PROFILE} | $(readlink ~/.aws/config | rev | cut -f2 -d '/' | rev)$(tput sgr0)$(tput setab 9)" ;;
-    *) prompt_segment 11 black "AWS: ${AWS_PROFILE} | $(readlink ~/.aws/config | rev | cut -f2 -d '/' | rev)" ;;
+  AWS_PROMPT="\U2601  ${AWS_PROFILE}|$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)"
+  case "$AWS_PROMPT" in
+    *main*|*prod*|*master*) 
+      prompt_segment 9 11 "$(tput setaf white)$(tput blink)${AWS_PROMPT}$(tput sgr0)$(tput setab 9)" 
+      ;;
+    *) 
+      prompt_segment 11 black "${AWS_PROMPT}" 
+      ;;
   esac
 }
 
