@@ -20,7 +20,7 @@ git clone https://github.com/easytocloud/oh-my-easytocloud.git
 cp oh-my-easytocloud/themes/easytocloud.zsh-theme ~/.oh-my-zsh/custom/themes
 ```
 
-and enjoy the new information in your prompt.
+Change ZSH_THEME (eg. in ~/.zshrc) to read "easytocloud" and enjoy the new information in your prompt.
 
 In the screenshot below you see the default profile is active in the training environment.
 It also showcases our [privpage](https://github.com/easytocloud/privpage) aws cli integration to hide sensitive information in cli output!
