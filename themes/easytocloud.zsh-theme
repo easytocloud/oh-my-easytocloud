@@ -76,8 +76,10 @@ prompt_segment() {
 prompt_end() {
   if [[ -n $CURRENT_BG ]]; then
     echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
+    echo -n "\n%{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
   else
-    echo -n "%{%k%}"
+    echo -n " %{%k%}"
+    echo -n "\n%{%k%}"
   fi
   echo -n "%{%f%}"
   CURRENT_BG=''
@@ -235,14 +237,12 @@ prompt_status() {
 # - displays black on (AWS) yellow otherwise
 prompt_aws() {
   [[ -z "$AWS_PROFILE" || "$SHOW_AWS_PROMPT" = false ]] && return
-  AWS_PROMPT="\U2601  ${AWS_PROFILE}|$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)"
+  _AE=$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)
+  AWS_PROMPT="\U2601  ${AWS_PROFILE}"${_AE:+"|${_AE}"}
+  
   case "$AWS_PROMPT" in
-    *main*|*prod*|*master*) 
-      prompt_segment 9 11 "$(tput setaf white)$(tput blink)${AWS_PROMPT}$(tput sgr0)$(tput setab 9)" 
-      ;;
-    *) 
-      prompt_segment 11 black "${AWS_PROMPT}" 
-      ;;
+    *main*|*prod*|*master*) prompt_segment 9 11 "$(tput setaf white)$(tput blink)${AWS_PROMPT}$(tput sgr0)$(tput setab 9)" ;;
+    *) prompt_segment 11 black "${AWS_PROMPT}" ;;
   esac
 }
 

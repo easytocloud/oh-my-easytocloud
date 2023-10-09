@@ -10,7 +10,7 @@ AWS environments are part of [aws-profile-organizer](https://github.com/easytocl
 Install the theme in the customs/themes directory of your oh-my-zsh installation (usually in ~/.oh-my-zsh).
 
 ```
-wget https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme -O ~/.oh-my-zsh/custom/themes/easytocloud.zsh.theme
+wget https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme -O ~/.oh-my-zsh/custom/themes/easytocloud.zsh-theme
 ```
 
 or first clone this repo and then copy the theme file
