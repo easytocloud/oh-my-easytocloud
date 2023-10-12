@@ -45,8 +45,16 @@ The theme uses the following variables to display information in the prompt:
 
 ``AWS_PROMPT`` - if set to anything other than an empty string, the value of this variable is displayed in the prompt
 
+<img src="ScreenShots/pic1.png >
 
-In the screenshot below you see the default profile is active in the training environment.
-It also showcases our [privpage](https://github.com/easytocloud/privpage) aws cli integration to hide sensitive information in cli output!
+In the example above, first AWS_PROFILE is not set, hence the aws command fails. 
+Then AWS_PROFILE is set, the prompt displays the value of AWS_PROFILE and the aws cli command works.
+Next, AWS_PROMPT is set to "Dev[factory]" and the aws cli command is run again. The prompt now displays "Dev[factory]" instead of the AWS_PROFILE value.
+Notice how this has no effect on the AWS_PROFILE environment variable itself.
+
+``AWS_ENV`` - if set to anything other than an empty string, the value of this variable is displayed in the prompt after the AWS_PROFILE value.
 
 <img width="701" alt="Screenshot 2022-11-13 at 14 27 59" src="https://user-images.githubusercontent.com/11883816/201524287-460a291d-aa27-45e9-8a66-1e8ab5649ad3.png">
+
+In the screenshot above you see the default profile is active in the training environment.
+It also showcases our [privpage](https://github.com/easytocloud/privpage) aws cli integration to hide sensitive information in cli output!
