@@ -45,7 +45,7 @@ The theme uses the following variables to display information in the prompt:
 
 ``AWS_PROMPT`` - if set to anything other than an empty string, the value of this variable is displayed in the prompt
 
-<img src="ScreenShots/pic1.png" width="700" >
+<img src="screenshots/pic1.png" width="700" >
 
 In the example above, first AWS_PROFILE is not set, hence the aws command fails. 
 Then AWS_PROFILE is set, the prompt displays the value of AWS_PROFILE and the aws cli command works.
