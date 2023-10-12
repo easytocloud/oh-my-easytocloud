@@ -236,9 +236,9 @@ prompt_status() {
 # - displays yellow on red if profile name contains 'main', 'prod' or 'master'
 # - displays black on (AWS) yellow otherwise
 prompt_aws() {
-  [[ "$SHOW_AWS_PROMPT" = false]] && return
+  [[ "$SHOW_AWS_PROMPT" = false ]] && return
   [[ -z "$AWS_PROFILE" ]] && [[ -z "$AWS_PROMPT" ]] && return
-  if test -z "${AWS_PROMPT}" ; then
+  if [[ -z "${AWS_PROMPT}" ]] ; then
     local _AE=$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)
     _AWS_PROMPT="\U2601  ${AWS_PROFILE}"${_AE:+"|${_AE}"}
   else
