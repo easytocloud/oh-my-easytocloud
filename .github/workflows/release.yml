@@ -52,10 +52,6 @@ jobs:
             system "cp", "themes/easytocloud.zsh-theme", ohmyzsh + "/custom/themes/"
             
             (share/"doc/oh-my-easytocloud").install "README.md"
-            
-            inreplace ohmyzsh + "/custom/plugins/easytocloud/easytocloud.plugin.zsh",
-              'source "${0:A:h}/easytocloud.plugin.zsh"',
-              "source #{ENV["HOME"]}/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
 
           test: |
             system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
