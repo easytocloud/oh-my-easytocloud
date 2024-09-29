@@ -1,3 +1,10 @@
+## [0.2.9](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.8...v0.2.9) (2024-09-29)
+
+
+### Bug Fixes
+
+* changed file permissions on theme ([1bc9b77](https://github.com/easytocloud/oh-my-easytocloud/commit/1bc9b77191554d86938e5decd3f552592ba29430))
+
 ## [0.2.8](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.7...v0.2.8) (2024-09-29)
 
 
