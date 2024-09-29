@@ -43,7 +43,7 @@ jobs:
           commit_email: homebrew-releaser@easytocloud.com
           
           install: |
-            ohmyzsh = ENV["HOME"] + "/.oh-my-zsh"
+            ohmyzsh = "~/.oh-my-zsh"
             
             system "mkdir", "-p", ohmyzsh + "/custom/plugins/easytocloud"
             system "cp", "-R", "plugins/easytocloud/.", ohmyzsh + "/custom/plugins/easytocloud/"
