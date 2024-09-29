@@ -1,3 +1,10 @@
+## [0.2.13](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.12...v0.2.13) (2024-09-29)
+
+
+### Bug Fixes
+
+* tried ~ for home ([ce9c0a1](https://github.com/easytocloud/oh-my-easytocloud/commit/ce9c0a1f103848c866c4de37cd209f1709647381))
+
 ## [0.2.12](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.11...v0.2.12) (2024-09-29)
 
 
