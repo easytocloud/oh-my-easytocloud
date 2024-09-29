@@ -1,3 +1,10 @@
+## [0.2.11](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.10...v0.2.11) (2024-09-29)
+
+
+### Bug Fixes
+
+* remove / ([14cd13f](https://github.com/easytocloud/oh-my-easytocloud/commit/14cd13ff8b7c386f6af7c468e7e23518cd7fd193))
+
 ## [0.2.10](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.9...v0.2.10) (2024-09-29)
 
 
