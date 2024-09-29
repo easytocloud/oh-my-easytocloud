@@ -1,3 +1,10 @@
+## [0.2.7](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.6...v0.2.7) (2024-09-29)
+
+
+### Bug Fixes
+
+* 7th attempt to fix version in install (removed version:) ([5c8ff8d](https://github.com/easytocloud/oh-my-easytocloud/commit/5c8ff8d68725fd17bf06b49d31fad4cc5e928a93))
+
 ## [0.2.6](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.5...v0.2.6) (2024-09-29)
 
 
