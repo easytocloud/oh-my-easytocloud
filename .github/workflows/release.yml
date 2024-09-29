@@ -35,7 +35,7 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.load-github-credentials.outputs.HOMEBREW_TAP_GITHUB_TOKEN  }}
 
-      - name: Release akskrotate to easytocloud/homebrew-tap
+      - name: Release oh-my-easytocloud to easytocloud/homebrew-tap
         if: steps.semantic.outputs.new_release_published == 'true'
         uses: Justintime50/homebrew-releaser@v1
         with:
@@ -76,7 +76,7 @@ jobs:
 
           # Custom test command for your formula so you can run `brew test`.
           # Optional - string.
-          test: 'assert_match("Please set AWS_PROFILE before calling akskrotate", shell_output("unset AWS_PROFILE ; akskrotate 2>&1", 1))'
+          # test: 'assert_match("Please set AWS_PROFILE before calling akskrotate", shell_output("unset AWS_PROFILE ; akskrotate 2>&1", 1))'
 
           # Adds URL and checksum targets for different OS and architecture pairs. Using this option assumes 
           # a tar archive exists on your GitHub repo with the following URL pattern (this cannot be customized):
