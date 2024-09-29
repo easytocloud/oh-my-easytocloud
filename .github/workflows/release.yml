@@ -45,18 +45,21 @@ jobs:
           install: |
             ohmyzsh = ENV["HOME"] + "/.oh-my-zsh"
             
-            (ohmyzsh/"custom/plugins/easytocloud").install Dir["plugins/easytocloud/*"]
-            (ohmyzsh/"custom/themes").install "themes/easytocloud.zsh-theme"
+            system "mkdir", "-p", ohmyzsh + "/custom/plugins/easytocloud"
+            system "cp", "-R", "plugins/easytocloud/.", ohmyzsh + "/custom/plugins/easytocloud/"
+            
+            system "mkdir", "-p", ohmyzsh + "/custom/themes"
+            system "cp", "themes/easytocloud.zsh-theme", ohmyzsh + "/custom/themes/"
             
             (share/"doc/oh-my-easytocloud").install "README.md"
             
-            inreplace "#{ohmyzsh}/custom/plugins/easytocloud/easytocloud.plugin.zsh",
+            inreplace ohmyzsh + "/custom/plugins/easytocloud/easytocloud.plugin.zsh",
               'source "${0:A:h}/easytocloud.plugin.zsh"',
               "source #{ENV["HOME"]}/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
 
           test: |
-            system "test", "-f", "#{ENV["HOME"]}/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
-            system "test", "-f", "#{ENV["HOME"]}/.oh-my-zsh/custom/themes/easytocloud.zsh-theme"
+            system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
+            system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/themes/easytocloud.zsh-theme"
 
           update_readme_table: true
           skip_commit: false
