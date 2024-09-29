@@ -65,7 +65,8 @@ jobs:
           # Custom install command for your formula.
           # Required - string.
           install: |
-                
+                  install.bin "themes/easytocloud.zsh-theme"
+
                   # Install the plugin directory to ~/.oh-my-zsh/custom/plugins
                   plugin_dir = File.expand_path("~/.oh-my-zsh/custom/plugins/easytocloud")
                   mkdir_p plugin_dir
@@ -75,7 +76,6 @@ jobs:
                   theme_dir = File.expand_path("~/.oh-my-zsh/custom/themes")
                   mkdir_p theme_dir
                   cp "themes/easytocloud.zsh-theme", theme_dir
-                  install.bin "themes/easytocloud.zsh-theme", "easytokabouter"
 
           # Custom test command for your formula so you can run `brew test`.
           # Optional - string.
