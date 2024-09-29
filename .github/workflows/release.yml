@@ -60,7 +60,7 @@ jobs:
           # Custom dependencies in case other formulas are needed to build the current one.
           # Optional - multiline string.
           
-          version: ${{ steps.semantic.outputs.new_release_version }}
+          # version: ${{ steps.semantic.outputs.new_release_version }}
 
           # Custom install command for your formula.
           # Required - string.
