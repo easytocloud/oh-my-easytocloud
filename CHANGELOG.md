@@ -1,3 +1,10 @@
+## [0.2.10](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.9...v0.2.10) (2024-09-29)
+
+
+### Bug Fixes
+
+* claude ([da0db02](https://github.com/easytocloud/oh-my-easytocloud/commit/da0db023dd1ff895a2c43e1647832a905524e5c3))
+
 ## [0.2.9](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.8...v0.2.9) (2024-09-29)
 
 
