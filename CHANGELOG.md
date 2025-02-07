@@ -1,3 +1,10 @@
+## [0.2.14](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.13...v0.2.14) (2025-02-07)
+
+
+### Bug Fixes
+
+* improved colors for production AWS accounts ([f5a9390](https://github.com/easytocloud/oh-my-easytocloud/commit/f5a9390771940f3c0fe1b25a22314aee0c620971))
+
 ## [0.2.13](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.12...v0.2.13) (2024-09-29)
 
 
