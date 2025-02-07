@@ -246,8 +246,8 @@ prompt_aws() {
     _AWS_PROMPT="${AWS_PROMPT}"
   fi
   
-  case "$_AWS_PROMPT" in
-    *main*|*prod*|*master*) prompt_segment 9 11 "$(tput setaf white)$(tput blink)${_AWS_PROMPT}$(tput sgr0)$(tput setab 9)" ;;
+  case "${_AWS_PROMPT:l}" in
+    *main*|*prod*|*master*) prompt_segment 196 white "${_AWS_PROMPT}" ;;
     *) prompt_segment 11 black "${_AWS_PROMPT}" ;;
   esac
 }
