@@ -1,3 +1,10 @@
+## [0.2.15](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.14...v0.2.15) (2025-02-07)
+
+
+### Bug Fixes
+
+* better cloud icon in AWS prompt ([bd76430](https://github.com/easytocloud/oh-my-easytocloud/commit/bd764307ea7666dcd7dcd81a0c828d67d0cf8713))
+
 ## [0.2.14](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.13...v0.2.14) (2025-02-07)
 
 
