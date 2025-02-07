@@ -241,7 +241,8 @@ prompt_aws() {
   [[ -z "$AWS_PROFILE" ]] && [[ -z "$AWS_PROMPT" ]] && return
   if [[ -z "${AWS_PROMPT}" ]] ; then
     local _AE=$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)
-    _AWS_PROMPT="\U2601  ${AWS_PROFILE}"${_AE:+"|${_AE}"}
+    [[ "$_AE" == ".aws" ]] && _AE=""
+    _AWS_PROMPT=$'\u26C5'" ${AWS_PROFILE}"${_AE:+"|${_AE}"}
   else
     _AWS_PROMPT="${AWS_PROMPT}"
   fi
