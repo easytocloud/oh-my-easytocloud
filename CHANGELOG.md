@@ -1,3 +1,10 @@
+## [0.2.19](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.18...v0.2.19) (2025-11-25)
+
+
+### Bug Fixes
+
+* secured installation, update still fails ([588cfbc](https://github.com/easytocloud/oh-my-easytocloud/commit/588cfbca18da88e7053cd29ade8a961d86599b7c))
+
 ## [0.2.18](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.17...v0.2.18) (2025-11-25)
 
 
