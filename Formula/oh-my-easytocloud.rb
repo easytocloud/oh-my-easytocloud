@@ -9,15 +9,22 @@ class OhMyEasytocloud < Formula
   license "MIT"
 
   def install
+    # Install to Homebrew's share directory (always works)
+    (share/"oh-my-easytocloud/plugins/easytocloud").install Dir["plugins/easytocloud/*"]
+    (share/"oh-my-easytocloud/themes").install "themes/easytocloud.zsh-theme"
+    (share/"doc/oh-my-easytocloud").install "README.md"
+  end
+
+  def post_install
+    # post_install runs outside sandbox, so HOME is the real home directory
     ohmyzsh = ENV["HOME"] + "/.oh-my-zsh"
+    return unless Dir.exist?(ohmyzsh)
 
     system "mkdir", "-p", ohmyzsh + "/custom/plugins/easytocloud"
-    system "cp", "-R", "plugins/easytocloud/.", ohmyzsh + "/custom/plugins/easytocloud/"
+    system "cp", "-R", (share/"oh-my-easytocloud/plugins/easytocloud").to_s + "/.", ohmyzsh + "/custom/plugins/easytocloud/"
 
     system "mkdir", "-p", ohmyzsh + "/custom/themes"
-    system "cp", "themes/easytocloud.zsh-theme", ohmyzsh + "/custom/themes/"
-
-    (share/"doc/oh-my-easytocloud").install "README.md"
+    system "cp", (share/"oh-my-easytocloud/themes/easytocloud.zsh-theme").to_s, ohmyzsh + "/custom/themes/"
   end
 
   def caveats
@@ -31,7 +38,7 @@ class OhMyEasytocloud < Formula
   end
 
   test do
-    system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
-    system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/themes/easytocloud.zsh-theme"
+    assert_predicate share/"oh-my-easytocloud/plugins/easytocloud/easytocloud.plugin.zsh", :exist?
+    assert_predicate share/"oh-my-easytocloud/themes/easytocloud.zsh-theme", :exist?
   end
 end
