@@ -43,19 +43,29 @@ jobs:
           commit_email: homebrew-releaser@easytocloud.com
           
           install: |
-            ohmyzsh = "~/.oh-my-zsh"
-            
-            system "mkdir", "-p", ohmyzsh + "/custom/plugins/easytocloud"
-            system "cp", "-R", "plugins/easytocloud/.", ohmyzsh + "/custom/plugins/easytocloud/"
-            
-            system "mkdir", "-p", ohmyzsh + "/custom/themes"
-            system "cp", "themes/easytocloud.zsh-theme", ohmyzsh + "/custom/themes/"
-            
+            (share/"oh-my-easytocloud/plugins/easytocloud").install Dir["plugins/easytocloud/*"]
+            (share/"oh-my-easytocloud/themes").install "themes/easytocloud.zsh-theme"
             (share/"doc/oh-my-easytocloud").install "README.md"
 
+          custom_block: |
+            def post_install
+              ohmyzsh = Pathname.new(ENV["HOME"]) / ".oh-my-zsh"
+              return unless ohmyzsh.directory?
+              
+              # Install plugin
+              plugin_dir = ohmyzsh / "custom/plugins/easytocloud"
+              plugin_dir.mkpath
+              cp_r (share/"oh-my-easytocloud/plugins/easytocloud").children, plugin_dir
+              
+              # Install theme
+              theme_dir = ohmyzsh / "custom/themes"
+              theme_dir.mkpath
+              cp share/"oh-my-easytocloud/themes/easytocloud.zsh-theme", theme_dir
+            end
+
           test: |
-            system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
-            system "test", "-f", ENV["HOME"] + "/.oh-my-zsh/custom/themes/easytocloud.zsh-theme"
+            system "test", "-d", share/"oh-my-easytocloud/plugins/easytocloud"
+            system "test", "-f", share/"oh-my-easytocloud/themes/easytocloud.zsh-theme"
 
           update_readme_table: true
           skip_commit: false
