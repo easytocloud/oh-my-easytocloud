@@ -1,3 +1,12 @@
+## [0.2.16](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.15...v0.2.16) (2025-11-25)
+
+
+### Bug Fixes
+
+* small  changes ([877ec8c](https://github.com/easytocloud/oh-my-easytocloud/commit/877ec8cea54e535162a8d89defc124004dbdba3b))
+* small  changes ([f0422c0](https://github.com/easytocloud/oh-my-easytocloud/commit/f0422c07fb9ad1f84511120fd610a760cebc091d))
+* small  changes ([aada049](https://github.com/easytocloud/oh-my-easytocloud/commit/aada049fe01ad539234b533e196b8f64eed9080e))
+
 ## [0.2.15](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.14...v0.2.15) (2025-02-07)
 
 
