@@ -31,42 +31,31 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.load-github-credentials.outputs.HOMEBREW_TAP_GITHUB_TOKEN  }}
 
-      - name: Release oh-my-easytocloud to easytocloud/homebrew-tap
+      - name: Update formula with new version and checksum
         if: steps.semantic.outputs.new_release_published == 'true'
-        uses: Justintime50/homebrew-releaser@v1
-        with:
-          homebrew_owner: easytocloud
-          homebrew_tap: homebrew-tap
-          formula_folder: Formula
-          github_token: ${{ steps.load-github-credentials.outputs.HOMEBREW_TAP_GITHUB_TOKEN  }}
-          commit_owner: homebrew-releaser
-          commit_email: homebrew-releaser@easytocloud.com
+        run: |
+          VERSION="${{ steps.semantic.outputs.new_release_version }}"
+          TAR_URL="https://github.com/easytocloud/oh-my-easytocloud/archive/refs/tags/v${VERSION}.tar.gz"
           
-          install: |
-            (share/"oh-my-easytocloud/plugins/easytocloud").install Dir["plugins/easytocloud/*"]
-            (share/"oh-my-easytocloud/themes").install "themes/easytocloud.zsh-theme"
-            (share/"doc/oh-my-easytocloud").install "README.md"
+          # Download and compute SHA256
+          curl -sL "$TAR_URL" -o release.tar.gz
+          SHA256=$(sha256sum release.tar.gz | cut -d' ' -f1)
+          
+          # Update formula file with version and checksum
+          sed -i "s|url \".*\"|url \"${TAR_URL}\"|" Formula/oh-my-easytocloud.rb
+          sed -i "s|sha256 \".*\"|sha256 \"${SHA256}\"|" Formula/oh-my-easytocloud.rb
 
-          custom_block: |
-            def post_install
-              ohmyzsh = Pathname.new(ENV["HOME"]) / ".oh-my-zsh"
-              return unless ohmyzsh.directory?
-              
-              # Install plugin
-              plugin_dir = ohmyzsh / "custom/plugins/easytocloud"
-              plugin_dir.mkpath
-              cp_r (share/"oh-my-easytocloud/plugins/easytocloud").children, plugin_dir
-              
-              # Install theme
-              theme_dir = ohmyzsh / "custom/themes"
-              theme_dir.mkpath
-              cp share/"oh-my-easytocloud/themes/easytocloud.zsh-theme", theme_dir
-            end
-
-          test: |
-            system "test", "-d", share/"oh-my-easytocloud/plugins/easytocloud"
-            system "test", "-f", share/"oh-my-easytocloud/themes/easytocloud.zsh-theme"
-
-          update_readme_table: true
-          skip_commit: false
-          debug: true
+      - name: Push formula to homebrew-tap
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          VERSION="${{ steps.semantic.outputs.new_release_version }}"
+          
+          git clone https://x-access-token:${{ steps.load-github-credentials.outputs.HOMEBREW_TAP_GITHUB_TOKEN }}@github.com/easytocloud/homebrew-tap.git tap
+          cp Formula/oh-my-easytocloud.rb tap/Formula/
+          
+          cd tap
+          git config user.name "homebrew-releaser"
+          git config user.email "homebrew-releaser@easytocloud.com"
+          git add Formula/oh-my-easytocloud.rb
+          git commit -m "chore: update oh-my-easytocloud to v${VERSION}"
+          git push
