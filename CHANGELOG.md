@@ -1,3 +1,10 @@
+## [0.2.17](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.16...v0.2.17) (2025-11-25)
+
+
+### Bug Fixes
+
+* improved homebrew installation ([fcd1cfc](https://github.com/easytocloud/oh-my-easytocloud/commit/fcd1cfc0efe27178a2417f0af7a255468649b0dc))
+
 ## [0.2.16](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.15...v0.2.16) (2025-11-25)
 
 
