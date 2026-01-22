@@ -1,12 +1,12 @@
 #
 # easytocloud modification to default aws plugin
 
-cloud_icon=$(echo '\U2601')
 
-export ZSH_THEME_AWS_PROFILE_PREFIX="%K{11}%F{black} ${cloud_icon} "
+export ZSH_THEME_AWS_PROFILE_PREFIX="%K{11}%F{black} "
 export ZSH_THEME_AWS_PROFILE_SUFFIX=""
 export ZSH_THEME_AWS_DIVIDER=" | "
 
+SHOW_AWS_PROMPT=false
 source ${ZSH:-${HOME}/.oh-my-zsh}/plugins/aws/aws.plugin.zsh
 
 # some getters

@@ -17,14 +17,21 @@ class OhMyEasytocloud < Formula
 
   def post_install
     # post_install runs outside sandbox, so HOME is the real home directory
-    ohmyzsh = ENV["HOME"] + "/.oh-my-zsh"
-    return unless Dir.exist?(ohmyzsh)
+    ohmyzsh = Pathname(ENV["HOME"]) / ".oh-my-zsh"
+    return unless ohmyzsh.exist?
 
-    system "mkdir", "-p", ohmyzsh + "/custom/plugins/easytocloud"
-    system "cp", "-R", (share/"oh-my-easytocloud/plugins/easytocloud").to_s + "/.", ohmyzsh + "/custom/plugins/easytocloud/"
+    # Install plugin
+    plugin_dir = ohmyzsh / "custom/plugins/easytocloud"
+    rm_rf plugin_dir
+    plugin_dir.mkpath
+    cp_r (share/"oh-my-easytocloud/plugins/easytocloud").children, plugin_dir
 
-    system "mkdir", "-p", ohmyzsh + "/custom/themes"
-    system "cp", (share/"oh-my-easytocloud/themes/easytocloud.zsh-theme").to_s, ohmyzsh + "/custom/themes/"
+    # Install theme  
+    theme_dir = ohmyzsh / "custom/themes"
+    theme_dir.mkpath
+    theme_file = theme_dir / "easytocloud.zsh-theme"
+    rm_f theme_file
+    cp share/"oh-my-easytocloud/themes/easytocloud.zsh-theme", theme_file
   end
 
   def caveats
