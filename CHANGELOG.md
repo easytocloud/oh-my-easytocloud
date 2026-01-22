@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.0.1...v1.1.0) (2026-01-22)
+
+
+### Features
+
+* better install.sh ([9411280](https://github.com/easytocloud/oh-my-easytocloud/commit/94112803ea6fc4e01df1dad7e86cc1e585c6020e))
+
 ## [1.0.1](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.0.0...v1.0.1) (2026-01-22)
 
 
