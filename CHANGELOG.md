@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.0.0...v1.0.1) (2026-01-22)
+
+
+### Bug Fixes
+
+* test improved (post) install ([e1ce51b](https://github.com/easytocloud/oh-my-easytocloud/commit/e1ce51bcaae108c21d3fc2e3b80bbeeafe8eadd3))
+
 # [1.0.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.21...v1.0.0) (2026-01-22)
 
 
