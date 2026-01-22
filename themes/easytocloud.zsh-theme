@@ -178,8 +178,8 @@ get_aws_account_info() {
   [[ "$_AWS_CACHE_KEY" == "$cache_key" ]] && echo "$_AWS_CACHE_VALUE" && return
   
   _AWS_CACHE_KEY="$cache_key"
-  # Only call AWS API if we have direct credentials (no profile)
-  if [[ -n "$AWS_ACCESS_KEY_ID" && -z "$AWS_PROFILE" ]]; then
+  # Only call AWS API if we have direct credentials
+  if [[ -n "$AWS_ACCESS_KEY_ID" ]]; then
     local account_id=$(aws sts get-caller-identity --query Account --output text 2>/dev/null)
     if [[ -n "$account_id" ]]; then
       # Cache config file content to avoid repeated I/O

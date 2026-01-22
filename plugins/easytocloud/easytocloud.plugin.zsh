@@ -6,7 +6,6 @@ export ZSH_THEME_AWS_PROFILE_PREFIX="%K{11}%F{black} "
 export ZSH_THEME_AWS_PROFILE_SUFFIX=""
 export ZSH_THEME_AWS_DIVIDER=" | "
 
-SHOW_AWS_PROMPT=false
 source ${ZSH:-${HOME}/.oh-my-zsh}/plugins/aws/aws.plugin.zsh
 
 # some getters
@@ -101,3 +100,4 @@ function aws_prompt_info() {
 
   echo "$_aws_to_show"
 }
+RPROMPT_AWS_SHOW_ENV=false

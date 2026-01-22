@@ -15,15 +15,26 @@ fi
 mkdir -p "$HOME/.oh-my-zsh/custom/themes"
 mkdir -p "$HOME/.oh-my-zsh/custom/plugins/easytocloud"
 
-# Download and install theme
-echo "📥 Installing easytocloud theme..."
-curl -fsSL https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme \
-    -o "$HOME/.oh-my-zsh/custom/themes/easytocloud.zsh-theme"
-
-# Download and install plugin
-echo "📥 Installing easytocloud plugin..."
-curl -fsSL https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/plugins/easytocloud/easytocloud.plugin.zsh \
-    -o "$HOME/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
+# Check for --local flag
+if [[ "$1" == "--local" ]]; then
+    # Install from local files
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    
+    echo "📥 Installing easytocloud theme from local files..."
+    cp "$SCRIPT_DIR/themes/easytocloud.zsh-theme" "$HOME/.oh-my-zsh/custom/themes/"
+    
+    echo "📥 Installing easytocloud plugin from local files..."
+    cp "$SCRIPT_DIR/plugins/easytocloud/easytocloud.plugin.zsh" "$HOME/.oh-my-zsh/custom/plugins/easytocloud/"
+else
+    # Download from GitHub
+    echo "📥 Installing easytocloud theme..."
+    curl -fsSL https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme \
+        -o "$HOME/.oh-my-zsh/custom/themes/easytocloud.zsh-theme"
+    
+    echo "📥 Installing easytocloud plugin..."
+    curl -fsSL https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/plugins/easytocloud/easytocloud.plugin.zsh \
+        -o "$HOME/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
+fi
 
 echo "✅ Installation complete!"
 echo ""
