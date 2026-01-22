@@ -42,7 +42,13 @@ ZSHRC="$HOME/.zshrc"
 
 # Set theme
 if grep -q '^ZSH_THEME=' "$ZSHRC"; then
-    sed -i.bak 's/^ZSH_THEME=.*/ZSH_THEME="easytocloud"/' "$ZSHRC"
+    # Preserve symlinks by editing the target file
+    if [[ -L "$ZSHRC" ]]; then
+        TARGET=$(readlink "$ZSHRC")
+        sed 's/^ZSH_THEME=.*/ZSH_THEME="easytocloud"/' "$TARGET" > "$TARGET.tmp" && mv "$TARGET.tmp" "$TARGET"
+    else
+        sed 's/^ZSH_THEME=.*/ZSH_THEME="easytocloud"/' "$ZSHRC" > "$ZSHRC.tmp" && mv "$ZSHRC.tmp" "$ZSHRC"
+    fi
 else
     echo 'ZSH_THEME="easytocloud"' >> "$ZSHRC"
 fi
