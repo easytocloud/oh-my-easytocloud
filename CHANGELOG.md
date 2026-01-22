@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.1.1...v1.2.0) (2026-01-22)
+
+
+### Features
+
+* new installer ([ce9f49a](https://github.com/easytocloud/oh-my-easytocloud/commit/ce9f49aa945419aa676077ababe4688777ab0325))
+
 ## [1.1.1](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.1.0...v1.1.1) (2026-01-22)
 
 
