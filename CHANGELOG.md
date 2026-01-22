@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.21...v1.0.0) (2026-01-22)
+
+
+### Features
+
+* major performance improvements and Formula fixes ([712e9b4](https://github.com/easytocloud/oh-my-easytocloud/commit/712e9b477f0d3815dfb3042e51ccc2182fc7f6be))
+
+
+### BREAKING CHANGES
+
+* Significantly improved prompt performance and installation reliability
+
 ## [0.2.21](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.20...v0.2.21) (2026-01-22)
 
 
