@@ -1,3 +1,10 @@
+## [0.2.21](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.20...v0.2.21) (2026-01-22)
+
+
+### Performance Improvements
+
+* optimize AWS prompt performance with intelligent caching ([b59f80d](https://github.com/easytocloud/oh-my-easytocloud/commit/b59f80d7cf77eb234436ce87a4a856edf2dee7a5))
+
 ## [0.2.20](https://github.com/easytocloud/oh-my-easytocloud/compare/v0.2.19...v0.2.20) (2025-11-25)
 
 
