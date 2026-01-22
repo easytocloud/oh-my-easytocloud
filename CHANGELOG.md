@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.1.0...v1.1.1) (2026-01-22)
+
+
+### Bug Fixes
+
+* repaired account name lookup ([f7ee9fc](https://github.com/easytocloud/oh-my-easytocloud/commit/f7ee9fc638c40c606c425cd69472a2831c109e90))
+
 # [1.1.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.0.1...v1.1.0) (2026-01-22)
 
 
