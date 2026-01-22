@@ -28,6 +28,18 @@ case ${SOLARIZED_THEME:-dark} in
     *)     CURRENT_FG='black';;
 esac
 
+# Ultra-fast AWS cache with environment-based invalidation
+_AWS_CACHE_KEY=""
+_AWS_CACHE_VALUE=""
+_AWS_CONFIG_CACHE=""
+
+# Clear AWS cache (for testing)
+clear_aws_cache() {
+  _AWS_CACHE_KEY=""
+  _AWS_CACHE_VALUE=""
+  _AWS_CONFIG_CACHE=""
+}
+
 # Special Powerline characters
 
 () {
@@ -152,29 +164,86 @@ prompt_status() {
 
   [[ $RETVAL -ne 0 ]] && symbols+="%{%F{red}%}✘"
   [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}⚡"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
+  local job_count=$(jobs | wc -l)
+  [[ $job_count -gt 0 ]] && symbols+="%{%F{cyan}%}⚙"
 
   [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
 }
 
-# AWS Profile:
-# - display current AWS_PROFILE info
-# - displays yellow on red if profile name contains 'main', 'prod' or 'master'
-# - displays black on (AWS) yellow otherwise
-prompt_aws() {
-  [[ "$SHOW_AWS_PROMPT" = false ]] && return
-  [[ -z "$AWS_PROFILE" ]] && [[ -z "$AWS_PROMPT" ]] && return
-  if [[ -z "${AWS_PROMPT}" ]] ; then
-    local _AE=$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)
-    [[ "$_AE" == ".aws" ]] && _AE=""
-    _AWS_PROMPT=$'\u26C5'" ${AWS_PROFILE}"${_AE:+"|${_AE}"}
+# Lightning-fast AWS info lookup
+get_aws_account_info() {
+  local cache_key="${AWS_ACCESS_KEY_ID:-}:${AWS_SECRET_ACCESS_KEY:-}:${AWS_SESSION_TOKEN:-}:${AWS_PROFILE:-}:${AWS_CONFIG_FILE:-}"
+  
+  # Instant return if cache hit
+  [[ "$_AWS_CACHE_KEY" == "$cache_key" ]] && echo "$_AWS_CACHE_VALUE" && return
+  
+  _AWS_CACHE_KEY="$cache_key"
+  # Only call AWS API if we have direct credentials (no profile)
+  if [[ -n "$AWS_ACCESS_KEY_ID" && -z "$AWS_PROFILE" ]]; then
+    local account_id=$(aws sts get-caller-identity --query Account --output text 2>/dev/null)
+    if [[ -n "$account_id" ]]; then
+      # Cache config file content to avoid repeated I/O
+      if [[ -z "$_AWS_CONFIG_CACHE" ]]; then
+        local config_file="${AWS_CONFIG_FILE:-$HOME/.aws/config}"
+        [[ -L "$config_file" ]] && config_file="$HOME/.aws/$(readlink "$config_file")"
+        [[ -f "$config_file" ]] && _AWS_CONFIG_CACHE=$(<"$config_file")
+      fi
+      
+      if [[ -n "$_AWS_CONFIG_CACHE" ]]; then
+        # Ultra-fast string matching instead of grep/sed
+        local profiles=(${(f)"$(echo "$_AWS_CONFIG_CACHE" | awk -v id="$account_id" '
+          /^\[profile / { profile = $0; gsub(/^\[profile |\]$/, "", profile) }
+          /^sso_account_id = / && $3 == id { print profile }
+        ')"})
+        
+        if [[ ${#profiles[@]} -eq 1 ]]; then
+          _AWS_CACHE_VALUE="$profiles[1]"
+        elif [[ ${#profiles[@]} -gt 1 ]]; then
+          # Fast common suffix extraction
+          local suffix="${profiles[1]##*@}"
+          [[ "$profiles[1]" == *@* ]] && _AWS_CACHE_VALUE="$suffix" || _AWS_CACHE_VALUE="**${account_id: -4}"
+        else
+          _AWS_CACHE_VALUE="**${account_id: -4}"
+        fi
+      else
+        _AWS_CACHE_VALUE="**${account_id: -4}"
+      fi
+    else
+      _AWS_CACHE_VALUE=""
+    fi
   else
-    _AWS_PROMPT="${AWS_PROMPT}"
+    _AWS_CACHE_VALUE=""
   fi
   
-  case "${_AWS_PROMPT:l}" in
-    *main*|*prod*|*master*) prompt_segment 196 white "${_AWS_PROMPT}" ;;
-    *) prompt_segment 11 black "${_AWS_PROMPT}" ;;
+  echo "$_AWS_CACHE_VALUE"
+}
+
+# Optimized AWS prompt
+prompt_aws() {
+  [[ "$SHOW_AWS_PROMPT" = false ]] && return
+  
+  if [[ -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
+    local account_info=$(get_aws_account_info)
+    local aws_prompt=$'\u26C5'" CREDS${account_info:+"|$account_info"}${AWS_SESSION_TOKEN:+"|STS"}"
+    prompt_segment 208 black "$aws_prompt"
+    return
+  fi
+  
+  [[ -z "$AWS_PROFILE$AWS_PROMPT" ]] && return
+  
+  local aws_prompt
+  if [[ -n "$AWS_PROMPT" ]]; then
+    aws_prompt="$AWS_PROMPT"
+  else
+    # Fast environment extraction without subshells
+    local env_name="${AWS_CONFIG_FILE##*/}"
+    [[ "$env_name" == "config" ]] && env_name=""
+    aws_prompt=$'\u26C5'" $AWS_PROFILE${env_name:+"|$env_name"}"
+  fi
+  
+  case "${aws_prompt:l}" in
+    *main*|*prod*|*master*) prompt_segment 196 white "$aws_prompt" ;;
+    *) prompt_segment 11 black "$aws_prompt" ;;
   esac
 }
 
@@ -199,5 +268,12 @@ build_prompt() {
   prompt_end
 }
 
-precmd_functions+=(set_terminal_title)
+# Cache AWS info in precmd to avoid subshell issues
+precmd_aws_cache() {
+  if [[ -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
+    get_aws_account_info >/dev/null
+  fi
+}
+
+precmd_functions+=(set_terminal_title precmd_aws_cache)
 PROMPT='%{%f%b%k%}$(build_prompt) '
