@@ -1,14 +1,14 @@
 # .github/workflows/release.yml
-# Start Homebrew Releaser when a new tag is created
+# Create GitHub releases when pushing to main
 on:
   push:
     branches:
       - main
     
 jobs:
-  homebrew-releaser:
+  release:
     runs-on: ubuntu-latest
-    name: homebrew-releaser
+    name: semantic-release
     steps:
       - uses: actions/checkout@v4
 
@@ -23,39 +23,9 @@ jobs:
         with:
           export-env: false
         env:
-          HOMEBREW_TAP_GITHUB_TOKEN: op://CICD/github-easytocloud-brew/credential 
+          GITHUB_TOKEN: op://CICD/github-easytocloud-brew/credential 
 
       - name: Semantic Release
-        id: semantic
         uses: cycjimmy/semantic-release-action@v4
         env:
-          GH_TOKEN: ${{ steps.load-github-credentials.outputs.HOMEBREW_TAP_GITHUB_TOKEN  }}
-
-      - name: Update formula with new version and checksum
-        if: steps.semantic.outputs.new_release_published == 'true'
-        run: |
-          VERSION="${{ steps.semantic.outputs.new_release_version }}"
-          TAR_URL="https://github.com/easytocloud/oh-my-easytocloud/archive/refs/tags/v${VERSION}.tar.gz"
-          
-          # Download and compute SHA256
-          curl -sL "$TAR_URL" -o release.tar.gz
-          SHA256=$(sha256sum release.tar.gz | cut -d' ' -f1)
-          
-          # Update formula file with version and checksum
-          sed -i "s|url \".*\"|url \"${TAR_URL}\"|" Formula/oh-my-easytocloud.rb
-          sed -i "s|sha256 \".*\"|sha256 \"${SHA256}\"|" Formula/oh-my-easytocloud.rb
-
-      - name: Push formula to homebrew-tap
-        if: steps.semantic.outputs.new_release_published == 'true'
-        run: |
-          VERSION="${{ steps.semantic.outputs.new_release_version }}"
-          
-          git clone https://x-access-token:${{ steps.load-github-credentials.outputs.HOMEBREW_TAP_GITHUB_TOKEN }}@github.com/easytocloud/homebrew-tap.git tap
-          cp Formula/oh-my-easytocloud.rb tap/Formula/
-          
-          cd tap
-          git config user.name "homebrew-releaser"
-          git config user.email "homebrew-releaser@easytocloud.com"
-          git add Formula/oh-my-easytocloud.rb
-          git commit -m "chore: update oh-my-easytocloud to v${VERSION}"
-          git push
+          GH_TOKEN: ${{ steps.load-github-credentials.outputs.GITHUB_TOKEN }}

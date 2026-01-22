@@ -12,32 +12,19 @@ Should you have a ``$AWS_PROMPT`` variable set, it will be displayed instead.
 
 ## Installation
 
-Install the theme in the ``custom/themes`` directory of your oh-my-zsh installation (usually in ``~/.oh-my-zsh/custom/themes``).
+Install with a single command:
 
-```
-wget https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme -O ~/.oh-my-zsh/custom/themes/easytocloud.zsh-theme
-```
-
-or if ``wget`` is not available on your system, use ``curl``:
-
-```
-curl https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/themes/easytocloud.zsh-theme -so ~/.oh-my-zsh/custom/themes/easytocloud.zsh-theme
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/easytocloud/oh-my-easytocloud/main/install.sh)"
 ```
 
-Alternatively, clone this repo and then copy the theme file manually:
+The installer will:
+- Download the theme and plugin files
+- Automatically configure your `~/.zshrc` with the easytocloud theme
+- Add the easytocloud plugin to your plugins list
+- Create a backup of your `.zshrc` as `.zshrc.bak`
 
-```
-git clone https://github.com/easytocloud/oh-my-easytocloud.git
-cp oh-my-easytocloud/themes/easytocloud.zsh-theme ~/.oh-my-zsh/custom/themes
-```
-
-## Activation
-
-Change ``ZSH_THEME`` (eg. in ``~/.zshrc``) to read "easytocloud" and enjoy the new information in your prompt.
-
-```
-sed -i 's/ZSH_THEME=".*"/ZSH_THEME="easytocloud"/' ~/.zshrc
-```
+After installation, restart your terminal or run `source ~/.zshrc`.
 
 ## Variables
 

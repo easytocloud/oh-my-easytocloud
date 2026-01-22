@@ -100,4 +100,4 @@ function aws_prompt_info() {
 
   echo "$_aws_to_show"
 }
-RPROMPT_AWS_SHOW_ENV=false
+RPROMPT=""

@@ -36,10 +36,23 @@ else
         -o "$HOME/.oh-my-zsh/custom/plugins/easytocloud/easytocloud.plugin.zsh"
 fi
 
+# Update .zshrc
+echo "⚙️  Configuring .zshrc..."
+ZSHRC="$HOME/.zshrc"
+
+# Set theme
+if grep -q '^ZSH_THEME=' "$ZSHRC"; then
+    sed -i.bak 's/^ZSH_THEME=.*/ZSH_THEME="easytocloud"/' "$ZSHRC"
+else
+    echo 'ZSH_THEME="easytocloud"' >> "$ZSHRC"
+fi
+
+# Add plugin auto-loader
+if ! grep -q 'easytocloud.*plugins' "$ZSHRC"; then
+    echo '' >> "$ZSHRC"
+    echo '# Auto-add easytocloud plugin if not already present' >> "$ZSHRC"
+    echo '[[ " ${plugins[*]} " =~ " easytocloud " ]] || plugins=( $plugins easytocloud )' >> "$ZSHRC"
+fi
+
 echo "✅ Installation complete!"
-echo ""
-echo "To activate, add to your ~/.zshrc:"
-echo "  ZSH_THEME=\"easytocloud\""
-echo "  plugins=(... easytocloud ...)"
-echo ""
-echo "Then restart your terminal or run: source ~/.zshrc"
+echo "🔄 Please restart your terminal or run: source ~/.zshrc"
