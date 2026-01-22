@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.0...v1.2.1) (2026-01-22)
+
+
+### Bug Fixes
+
+* installer sed of .zshrc ([0c233f7](https://github.com/easytocloud/oh-my-easytocloud/commit/0c233f7d56867ca41fb54be3596ec0db9c410ce2))
+
 # [1.2.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.1.1...v1.2.0) (2026-01-22)
 
 
