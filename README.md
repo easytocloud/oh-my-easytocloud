@@ -5,10 +5,19 @@ oh-my-easytocloud is an oh-my-zsh theme to spice-up your command prompt.
 It is 95% identical to agnoster, just some different color scheme and support for 
 AWS environments in your prompt.
 
-AWS environments are part of [aws-profile-organizer](https://github.com/easytocloud/aws-profile-organizer)
+## AWS Environments
 
-The AWS part of the prompt is changed to display a cloud icon on an (AWS) orange background together with the value of your ``$AWS_PROFILE`` environment variable and optionally ``$AWS_ENV`` as set by aws-profile-organizer.
-Should you have a ``$AWS_PROMPT`` variable set, it will be displayed instead.
+AWS environments are an organizational system for managing multiple sets of AWS configuration and credential files on a single computer. They are stored in `~/.aws/aws-envs/` where each subdirectory represents a separate environment containing AWS `config` and/or `credentials` files.
+
+This allows you to:
+- Maintain different configurations for different customers
+- Separate production from non-production environments
+- Quickly switch between different AWS setups
+
+You can switch environments using `ase <env-name>` which by default creates symlinks from the standard AWS config files (`~/.aws/config` and `~/.aws/credentials`) to the files in the specified environment. Alternatively, use `ase <env-name> env` to set the `AWS_CONFIG_FILE` environment variable to point to the config file in that environment.
+
+The AWS part of the prompt displays a cloud icon on an (AWS) orange background together with the value of your `$AWS_PROFILE` environment variable and optionally `$AWS_ENV`.
+Should you have a `$AWS_PROMPT` variable set, it will be displayed instead.
 
 ## Installation
 
@@ -25,6 +34,25 @@ The installer will:
 - Create a backup of your `.zshrc` as `.zshrc.bak`
 
 After installation, restart your terminal or run `source ~/.zshrc`.
+
+## AWS Commands
+
+The easytocloud plugin extends the standard AWS plugin with additional commands for managing AWS environments:
+
+### Environment Commands
+- `ase <env-name> [link|env]` - AWS Set Environment (with tab completion)
+  - `link` (default): Creates global symlinks to environment config/credentials
+  - `env`: Sets environment variables for current shell only
+- `age` - AWS Get Environment (shows current environment)
+- `acc` - AWS Clear Credentials (removes all AWS credential variables)
+
+### Standard AWS Plugin Commands
+The plugin also includes all commands from the standard oh-my-zsh AWS plugin:
+- `asp <profile>` - AWS Set Profile
+- `agp` - AWS Get Profile
+- `asr <region>` - AWS Set Region (with tab completion)
+- `agr` - AWS Get Region
+- `aws_profiles` - List available profiles
 
 ## Variables
 

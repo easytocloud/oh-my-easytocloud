@@ -45,7 +45,9 @@ function ase() {
     local -a available_environments
     available_environments=($(_aws_environments))
     if [[ -z "${available_environments[(r)$1]}" ]]; then
-        echo "${fg[red]}Available environments: \n$(_aws_environments)"
+        echo "Usage: ase <env-name> [link|env]"
+        echo "Available environments:"
+        _aws_environments | sed 's/^/  /'
         return 1
     fi
     

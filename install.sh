@@ -58,13 +58,10 @@ if ! grep -q 'easytocloud.*plugins' "$ZSHRC"; then
 fi
 
 # Add AWS_ENV auto-detection
-if ! grep -q 'AWS_ENV.*aws-envs' "$ZSHRC"; then
+if ! grep -q 'AWS_ENV.*age' "$ZSHRC"; then
     echo '' >> "$ZSHRC"
-    echo '# Auto-detect AWS_ENV from symlinked config' >> "$ZSHRC"
-    echo 'if [[ -L ~/.aws/config ]]; then' >> "$ZSHRC"
-    echo '  config_target=$(readlink ~/.aws/config)' >> "$ZSHRC"
-    echo '  [[ "$config_target" == aws-envs/*/config ]] && export AWS_ENV="${config_target#aws-envs/}" && AWS_ENV="${AWS_ENV%/config}"' >> "$ZSHRC"
-    echo 'fi' >> "$ZSHRC"
+    echo '# Auto-detect AWS_ENV using age() function' >> "$ZSHRC"
+    echo '_aws_env=$(age 2>/dev/null) && [[ -n "$_aws_env" ]] && export AWS_ENV="$_aws_env"' >> "$ZSHRC"
 fi
 
 echo "✅ Installation complete!"
