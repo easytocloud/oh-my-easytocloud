@@ -50,11 +50,21 @@ else
     echo 'ZSH_THEME="easytocloud"' >> "$ZSHRC"
 fi
 
-# Add plugin auto-loader
+# Add plugin auto-loader BEFORE oh-my-zsh.sh sourcing
 if ! grep -q 'easytocloud.*plugins' "$ZSHRC"; then
-    echo '' >> "$ZSHRC"
-    echo '# Auto-add easytocloud plugin if not already present' >> "$ZSHRC"
-    echo '[[ " ${plugins[*]} " =~ " easytocloud " ]] || plugins=( $plugins easytocloud )' >> "$ZSHRC"
+    # Find the line that sources oh-my-zsh.sh
+    if grep -q 'source.*oh-my-zsh.sh' "$ZSHRC"; then
+        # Insert plugin loader before the source line
+        sed -i.bak '/source.*oh-my-zsh.sh/i\
+# Auto-add easytocloud plugin if not already present\
+[[ " ${plugins[*]} " =~ " easytocloud " ]] || plugins=( $plugins easytocloud )\
+' "$ZSHRC"
+    else
+        # Fallback: add at end if source line not found
+        echo '' >> "$ZSHRC"
+        echo '# Auto-add easytocloud plugin if not already present' >> "$ZSHRC"
+        echo '[[ " ${plugins[*]} " =~ " easytocloud " ]] || plugins=( $plugins easytocloud )' >> "$ZSHRC"
+    fi
 fi
 
 # Add AWS_ENV auto-detection
