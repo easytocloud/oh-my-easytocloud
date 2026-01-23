@@ -1,3 +1,11 @@
+## [1.2.7](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.6...v1.2.7) (2026-01-23)
+
+
+### Bug Fixes
+
+* improved prompts for ASIA AK/SK ([b99dd62](https://github.com/easytocloud/oh-my-easytocloud/commit/b99dd62b6ca70f3b1a1322d75279531203d86b63))
+* improved prompts for ASIA and AKIA identities ([bb53e39](https://github.com/easytocloud/oh-my-easytocloud/commit/bb53e3937d7b12cd143751f19055a890e951208c))
+
 ## [1.2.6](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.5...v1.2.6) (2026-01-23)
 
 
