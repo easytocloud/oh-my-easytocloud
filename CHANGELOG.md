@@ -1,3 +1,10 @@
+## [1.2.6](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.5...v1.2.6) (2026-01-23)
+
+
+### Bug Fixes
+
+* also reset AWS_DEFAULT_PROFILE with acc ([5f56dc7](https://github.com/easytocloud/oh-my-easytocloud/commit/5f56dc794398534551600520a90cf82ccc71fa33))
+
 ## [1.2.5](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.4...v1.2.5) (2026-01-23)
 
 
