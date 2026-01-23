@@ -1,3 +1,10 @@
+## [1.2.4](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.3...v1.2.4) (2026-01-23)
+
+
+### Bug Fixes
+
+* minor changes and fixes plus docu update ([47727aa](https://github.com/easytocloud/oh-my-easytocloud/commit/47727aa9675dfccf0d431ec4d1bb100b859acf82))
+
 ## [1.2.3](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.2...v1.2.3) (2026-01-23)
 
 
