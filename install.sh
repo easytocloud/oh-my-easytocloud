@@ -57,5 +57,15 @@ if ! grep -q 'easytocloud.*plugins' "$ZSHRC"; then
     echo '[[ " ${plugins[*]} " =~ " easytocloud " ]] || plugins=( $plugins easytocloud )' >> "$ZSHRC"
 fi
 
+# Add AWS_ENV auto-detection
+if ! grep -q 'AWS_ENV.*aws-envs' "$ZSHRC"; then
+    echo '' >> "$ZSHRC"
+    echo '# Auto-detect AWS_ENV from symlinked config' >> "$ZSHRC"
+    echo 'if [[ -L ~/.aws/config ]]; then' >> "$ZSHRC"
+    echo '  config_target=$(readlink ~/.aws/config)' >> "$ZSHRC"
+    echo '  [[ "$config_target" == aws-envs/*/config ]] && export AWS_ENV="${config_target#aws-envs/}" && AWS_ENV="${AWS_ENV%/config}"' >> "$ZSHRC"
+    echo 'fi' >> "$ZSHRC"
+fi
+
 echo "✅ Installation complete!"
 echo "🔄 Please restart your terminal or run: source ~/.zshrc"

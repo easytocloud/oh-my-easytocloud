@@ -8,77 +8,84 @@ export ZSH_THEME_AWS_DIVIDER=" | "
 
 source ${ZSH:-${HOME}/.oh-my-zsh}/plugins/aws/aws.plugin.zsh
 
-# some getters
-function age() {
-
-    local _aws_env
-    _aws_env=$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev |  cut -f2 -d '/' | rev)
-    if [[ "$_aws_env" == ".aws" ]]; then
-         _aws_env=""
-    fi
-    echo $_aws_env
-}
-
-function aws_environments(){
-    ls ~/.aws/aws-envs
-}
-
-function ase(){
-    # check for existance of ~/.aws/aws-envs
+# Internal functions
+function _check_aws_envs() {
     if [[ ! -d ~/.aws/aws-envs ]]; then
         echo "${fg[red]}No AWS environments found. Please create ~/.aws/aws-envs directory and add your environments."
         return 1
     fi
+}
+
+function _aws_environments() {
+    ls ~/.aws/aws-envs
+}
+
+function _get_current_env() {
+    local _aws_env
+    _aws_env=$(echo ${AWS_CONFIG_FILE:-$(readlink ~/.aws/config)} | rev | cut -f2 -d '/' | rev)
+    if [[ "$_aws_env" == ".aws" ]]; then
+        _aws_env=""
+    fi
+    echo $_aws_env
+}
+
+# Public functions
+function age() {
+    _get_current_env
+}
+
+function aws_environments() {
+    _check_aws_envs || return 1
+    _aws_environments
+}
+
+function ase() {
+    _check_aws_envs || return 1
+    
     local -a available_environments
-    available_environments=($(aws_environments))
+    available_environments=($(_aws_environments))
     if [[ -z "${available_environments[(r)$1]}" ]]; then
-        echo "${fg[red]}Available environments: \n$(aws_environments)"
+        echo "${fg[red]}Available environments: \n$(_aws_environments)"
         return 1
     fi
-    # check that ~/.aws/config AND ~/.aws/credentials are symlinks
+    
     if [[ ! -L ~/.aws/config || ! -L ~/.aws/credentials ]]; then
         echo "${fg[red]}~/.aws/config and ~/.aws/credentials must be symlinks"
         return 1
     fi
     
-    # Set AWS environment
-
-    local method
+    local method=${2:-"link"}
     AWS_ENV=$1
 
-    method=${2:-"link"}
-    if [[ "$method" == "link" ]]
-	then
-		(
-			cd ~/.aws
-			rm config credentials
-			ln -s aws-envs/${AWS_ENV}/config ~/.aws/config
-			ln -s aws-envs/${AWS_ENV}/credentials ~/.aws/credentials
-		)
-		unset AWS_CONFIG_FILE
-		unset AWS_SHARED_CREDENTIALS_FILE
-	else
-		export AWS_CONFIG_FILE=~"/.aws/aws-envs/${AWS_ENV}/config" 
-		export AWS_SHARED_CREDENTIALS_FILE=~"/.aws/aws-envs/${AWS_ENV}/credentials" 
-	fi
+    if [[ "$method" == "link" ]]; then
+        (
+            cd ~/.aws
+            rm config credentials
+            ln -s aws-envs/${AWS_ENV}/config ~/.aws/config
+            ln -s aws-envs/${AWS_ENV}/credentials ~/.aws/credentials
+        )
+        unset AWS_CONFIG_FILE
+        unset AWS_SHARED_CREDENTIALS_FILE
+    else
+        export AWS_CONFIG_FILE=~"/.aws/aws-envs/${AWS_ENV}/config"
+        export AWS_SHARED_CREDENTIALS_FILE=~"/.aws/aws-envs/${AWS_ENV}/credentials"
+    fi
 
-    # Set AWS_PROFILE
-    # if a 'default' profile exists in the environment, use it
-    # else use the first profile in the environment
-    if aws_profiles | grep -q '^default$'
-    then
+    if aws_profiles | grep -q '^default$'; then
         export AWS_PROFILE=default
     else
         export AWS_PROFILE=$(aws_profiles | head -n 1)
     fi
-
-    # awsenv $1
 }
 
-function _aws_environments(){
-    reply=($(aws_environments))
+function acc() {
+    unset AWS_PROFILE AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
 }
-compctl -K _aws_environments ase
+
+function _ase_completion() {
+    reply=($(_aws_environments 2>/dev/null))
+}
+compctl -K _ase_completion ase
 # override AWS prompt
 function aws_prompt_info() {
   local _aws_to_show
@@ -88,7 +95,7 @@ function aws_prompt_info() {
     _aws_to_show+="${ZSH_THEME_AWS_PROFILE_PREFIX="<aws:"}${AWS_PROFILE}${ZSH_THEME_AWS_PROFILE_SUFFIX=">"}"
   fi
 
-  local _AE=$(age)
+  local _AE=$(_get_current_env)
   if [[ -n "$_AE" ]]; then
     _aws_to_show+="${ZSH_THEME_AWS_DIVIDER="|"}${_AE} %k%f"
   fi

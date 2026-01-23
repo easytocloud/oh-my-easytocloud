@@ -236,8 +236,7 @@ prompt_aws() {
     aws_prompt="$AWS_PROMPT"
   else
     # Fast environment extraction without subshells
-    local env_name="${AWS_CONFIG_FILE##*/}"
-    [[ "$env_name" == "config" ]] && env_name=""
+    env_name="${AWS_ENV:-}"
     aws_prompt=$'\u26C5'" $AWS_PROFILE${env_name:+"|$env_name"}"
   fi
   
