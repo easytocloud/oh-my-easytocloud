@@ -173,40 +173,77 @@ prompt_status() {
 # Lightning-fast AWS info lookup
 get_aws_account_info() {
   local cache_key="${AWS_ACCESS_KEY_ID:-}:${AWS_SECRET_ACCESS_KEY:-}:${AWS_SESSION_TOKEN:-}:${AWS_PROFILE:-}:${AWS_CONFIG_FILE:-}"
-  
+
   # Instant return if cache hit
   [[ "$_AWS_CACHE_KEY" == "$cache_key" ]] && echo "$_AWS_CACHE_VALUE" && return
-  
+
   _AWS_CACHE_KEY="$cache_key"
   # Only call AWS API if we have direct credentials
   if [[ -n "$AWS_ACCESS_KEY_ID" ]]; then
-    local account_id=$(aws sts get-caller-identity --query Account --output text 2>/dev/null)
-    if [[ -n "$account_id" ]]; then
+    # Get both Account and Arn in one call
+    local identity_json=$(aws sts get-caller-identity --output json 2>/dev/null)
+    if [[ -n "$identity_json" ]]; then
+      local account_id=$(echo "$identity_json" | awk -F'"' '/"Account"/ {print $4}')
+      local arn=$(echo "$identity_json" | awk -F'"' '/"Arn"/ {print $4}')
+
+      local role_name=""
+      local account_name=""
+
+      # Extract role name from ARN for ASIA keys (SSO/STS assumed roles)
+      # ARN format: arn:aws:sts::ACCOUNT:assumed-role/ROLE_NAME/SESSION
+      if [[ "$AWS_ACCESS_KEY_ID" == ASIA* && "$arn" == *:assumed-role/* ]]; then
+        # Extract the role part: AWSReservedSSO__cloudX_1604b5a80f50c528
+        local full_role="${arn##*:assumed-role/}"
+        full_role="${full_role%%/*}"
+
+        # For SSO roles, extract the meaningful part (e.g., _cloudX from AWSReservedSSO__cloudX_...)
+        if [[ "$full_role" == AWSReservedSSO_* ]]; then
+          # Pattern: AWSReservedSSO_ROLENAME_HASH - extract ROLENAME
+          role_name="${full_role#AWSReservedSSO_}"
+          role_name="${role_name%_[a-f0-9]*}"
+        else
+          role_name="$full_role"
+        fi
+      fi
+
       # Cache config file content to avoid repeated I/O
       if [[ -z "$_AWS_CONFIG_CACHE" ]]; then
         local config_file="${AWS_CONFIG_FILE:-$HOME/.aws/config}"
         [[ -L "$config_file" ]] && config_file="$HOME/.aws/$(readlink "$config_file")"
         [[ -f "$config_file" ]] && _AWS_CONFIG_CACHE=$(<"$config_file")
       fi
-      
-      if [[ -n "$_AWS_CONFIG_CACHE" ]]; then
-        # Ultra-fast string matching instead of grep/sed
+
+      # Try to find account name from config file
+      # Profile format: <role>@<account>, so account_name is after @
+      if [[ -n "$_AWS_CONFIG_CACHE" && -n "$account_id" ]]; then
+        # Look for profiles with matching sso_account_id
         local profiles=(${(f)"$(echo "$_AWS_CONFIG_CACHE" | awk -v id="$account_id" '
           /^\[profile / { profile = $0; gsub(/^\[profile |\]$/, "", profile) }
-          /^sso_account_id = / && $3 == id { print profile }
+          /^sso_account_id[ ]*=/ && $NF == id { print profile }
         ')"})
-        
-        if [[ ${#profiles[@]} -eq 1 ]]; then
-          _AWS_CACHE_VALUE="$profiles[1]"
-        elif [[ ${#profiles[@]} -gt 1 ]]; then
-          # Fast common suffix extraction
-          local suffix="${profiles[1]##*@}"
-          [[ "$profiles[1]" == *@* ]] && _AWS_CACHE_VALUE="$suffix" || _AWS_CACHE_VALUE="**${account_id: -4}"
-        else
-          _AWS_CACHE_VALUE="**${account_id: -4}"
+
+        if [[ ${#profiles[@]} -ge 1 ]]; then
+          # Use last match (first matches may be special profiles like 'default' without @)
+          # Profile format is <role>@<account>, extract account name (after @)
+          if [[ "$profiles[-1]" == *@* ]]; then
+            account_name="${profiles[-1]##*@}"
+          else
+            account_name="$profiles[-1]"
+          fi
         fi
-      else
+      fi
+
+      # Build the display value in format: <role>@<account> to mimic profile names
+      if [[ -n "$role_name" && -n "$account_name" ]]; then
+        _AWS_CACHE_VALUE="${role_name}@${account_name}"
+      elif [[ -n "$role_name" && -n "$account_id" ]]; then
+        _AWS_CACHE_VALUE="${role_name}@**${account_id: -4}"
+      elif [[ -n "$account_name" ]]; then
+        _AWS_CACHE_VALUE="$account_name"
+      elif [[ -n "$account_id" ]]; then
         _AWS_CACHE_VALUE="**${account_id: -4}"
+      else
+        _AWS_CACHE_VALUE=""
       fi
     else
       _AWS_CACHE_VALUE=""
@@ -214,7 +251,7 @@ get_aws_account_info() {
   else
     _AWS_CACHE_VALUE=""
   fi
-  
+
   echo "$_AWS_CACHE_VALUE"
 }
 
@@ -224,7 +261,7 @@ prompt_aws() {
   
   if [[ -n "$AWS_ACCESS_KEY_ID" && -n "$AWS_SECRET_ACCESS_KEY" ]]; then
     local account_info=$(get_aws_account_info)
-    local aws_prompt=$'\u26C5'" CREDS${account_info:+"|$account_info"}${AWS_SESSION_TOKEN:+"|STS"}"
+    local aws_prompt=$'\u26C5'" ${AWS_ACCESS_KEY_ID:0:4}${account_info:+"|$account_info"}"
     prompt_segment 208 black "$aws_prompt"
     return
   fi
