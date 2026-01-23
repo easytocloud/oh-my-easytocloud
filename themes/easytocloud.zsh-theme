@@ -189,10 +189,10 @@ get_aws_account_info() {
       local role_name=""
       local account_name=""
 
-      # Extract role name from ARN for ASIA keys (SSO/STS assumed roles)
-      # ARN format: arn:aws:sts::ACCOUNT:assumed-role/ROLE_NAME/SESSION
+      # Extract role/user name from ARN based on key type
       if [[ "$AWS_ACCESS_KEY_ID" == ASIA* && "$arn" == *:assumed-role/* ]]; then
-        # Extract the role part: AWSReservedSSO__cloudX_1604b5a80f50c528
+        # ASIA keys: SSO/STS assumed roles
+        # ARN format: arn:aws:sts::ACCOUNT:assumed-role/ROLE_NAME/SESSION
         local full_role="${arn##*:assumed-role/}"
         full_role="${full_role%%/*}"
 
@@ -204,6 +204,10 @@ get_aws_account_info() {
         else
           role_name="$full_role"
         fi
+      elif [[ "$AWS_ACCESS_KEY_ID" == AKIA* && "$arn" == *:user/* ]]; then
+        # AKIA keys: IAM user long-term credentials
+        # ARN format: arn:aws:iam::ACCOUNT:user/USERNAME
+        role_name="${arn##*:user/}"
       fi
 
       # Cache config file content to avoid repeated I/O

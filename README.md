@@ -19,6 +19,20 @@ You can switch environments using `ase <env-name>` which by default creates syml
 The AWS part of the prompt displays a cloud icon on an (AWS) orange background together with the value of your `$AWS_PROFILE` environment variable and optionally `$AWS_ENV`.
 Should you have a `$AWS_PROMPT` variable set, it will be displayed instead.
 
+### Direct Credentials Display
+
+When using direct AWS credentials (e.g., from SSO login or IAM user keys), the prompt intelligently displays credential information:
+
+- **ASIA keys** (temporary SSO/STS credentials): Shows `☁ ASIA|<role>@<account>`
+  - Extracts the role name from SSO assumed roles (e.g., `_cloudX` from `AWSReservedSSO__cloudX_...`)
+  - Matches the account ID against profiles in your AWS config to display a friendly account name
+
+- **AKIA keys** (IAM user long-term credentials): Shows `☁ AKIA|<username>@<account>`
+  - Extracts the IAM username from the ARN
+  - Matches the account ID to display the account name
+
+The account name is derived from your AWS config file by matching the `sso_account_id` against profiles in the format `<role>@<account>`. If no matching profile is found, the last 4 digits of the account ID are displayed (e.g., `**3720`).
+
 ## Installation
 
 Install with a single command:
