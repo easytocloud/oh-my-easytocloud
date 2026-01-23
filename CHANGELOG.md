@@ -1,3 +1,11 @@
+## [1.2.5](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.4...v1.2.5) (2026-01-23)
+
+
+### Bug Fixes
+
+* include unset AWS_ENV in acc ([009a661](https://github.com/easytocloud/oh-my-easytocloud/commit/009a661c1668ae604acd988672cc0aea96b62132))
+* set/update plugin before source oh-my-zsh.sh ([9830ec5](https://github.com/easytocloud/oh-my-easytocloud/commit/9830ec5f78ce4c9c9e82520059ac7b5dec522694))
+
 ## [1.2.4](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.3...v1.2.4) (2026-01-23)
 
 
