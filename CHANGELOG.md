@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.2...v1.2.3) (2026-01-23)
+
+
+### Bug Fixes
+
+* minor improvements for AWS_ENV ([a7f6640](https://github.com/easytocloud/oh-my-easytocloud/commit/a7f6640950c09f02b68de150ed1d9f75214f88fd))
+
 ## [1.2.2](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.1...v1.2.2) (2026-01-22)
 
 
