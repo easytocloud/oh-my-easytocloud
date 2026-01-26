@@ -32,12 +32,28 @@ esac
 _AWS_CACHE_KEY=""
 _AWS_CACHE_VALUE=""
 _AWS_CONFIG_CACHE=""
+_EC2_INSTANCE_ID=""
 
 # Clear AWS cache (for testing)
 clear_aws_cache() {
   _AWS_CACHE_KEY=""
   _AWS_CACHE_VALUE=""
   _AWS_CONFIG_CACHE=""
+  _EC2_INSTANCE_ID=""
+}
+
+# Get EC2 instance ID (cached)
+get_ec2_instance_id() {
+  if [[ -z "$_EC2_INSTANCE_ID" ]]; then
+    # Try IMDSv2 first, fall back to IMDSv1
+    local token=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" --connect-timeout 1 2>/dev/null)
+    if [[ -n "$token" ]]; then
+      _EC2_INSTANCE_ID=$(curl -s -H "X-aws-ec2-metadata-token: $token" "http://169.254.169.254/latest/meta-data/instance-id" --connect-timeout 1 2>/dev/null)
+    else
+      _EC2_INSTANCE_ID=$(curl -s "http://169.254.169.254/latest/meta-data/instance-id" --connect-timeout 1 2>/dev/null)
+    fi
+  fi
+  echo "$_EC2_INSTANCE_ID"
 }
 
 # Special Powerline characters
@@ -172,7 +188,7 @@ prompt_status() {
 
 # Lightning-fast AWS info lookup
 get_aws_account_info() {
-  local cache_key="${AWS_ACCESS_KEY_ID:-}:${AWS_SECRET_ACCESS_KEY:-}:${AWS_SESSION_TOKEN:-}:${AWS_PROFILE:-}:${AWS_CONFIG_FILE:-}"
+  local cache_key="${USER:-}:${AWS_ACCESS_KEY_ID:-}:${AWS_SECRET_ACCESS_KEY:-}:${AWS_SESSION_TOKEN:-}:${AWS_PROFILE:-}:${AWS_CONFIG_FILE:-}"
 
   # Instant return if cache hit
   [[ "$_AWS_CACHE_KEY" == "$cache_key" ]] && echo "$_AWS_CACHE_VALUE" && return
@@ -270,8 +286,18 @@ prompt_aws() {
     return
   fi
   
+  # Show EC2 instance ID when ec2-user without AWS credentials
+  if [[ "$USER" == "ec2-user" && -z "$AWS_PROFILE" && -z "$AWS_ACCESS_KEY_ID" ]]; then
+    local instance_id=$(get_ec2_instance_id)
+    if [[ -n "$instance_id" ]]; then
+      local aws_prompt=$'\u26C5'" $instance_id"
+      prompt_segment 39 black "$aws_prompt"
+      return
+    fi
+  fi
+
   [[ -z "$AWS_PROFILE$AWS_PROMPT" ]] && return
-  
+
   local aws_prompt
   if [[ -n "$AWS_PROMPT" ]]; then
     aws_prompt="$AWS_PROMPT"
