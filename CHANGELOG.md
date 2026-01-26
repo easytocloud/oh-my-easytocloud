@@ -1,3 +1,10 @@
+## [1.2.8](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.7...v1.2.8) (2026-01-26)
+
+
+### Bug Fixes
+
+* add ec2-instance Id to prompt when no (other) identity active ([cc4121d](https://github.com/easytocloud/oh-my-easytocloud/commit/cc4121d8e7f73248d4a43827a71088d9a8b2aa43))
+
 ## [1.2.7](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.6...v1.2.7) (2026-01-23)
 
 
