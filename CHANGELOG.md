@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.8...v1.3.0) (2026-03-27)
+
+
+### Features
+
+* add --global/--session scope options and environment listing indicators to ase ([3635574](https://github.com/easytocloud/oh-my-easytocloud/commit/3635574fd25ee0efe147761ed6c5cc7066592527))
+
 ## [1.2.8](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.7...v1.2.8) (2026-01-26)
 
 
