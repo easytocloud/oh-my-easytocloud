@@ -14,7 +14,7 @@ This allows you to:
 - Separate production from non-production environments
 - Quickly switch between different AWS setups
 
-You can switch environments using `ase <env-name>` which by default creates symlinks from the standard AWS config files (`~/.aws/config` and `~/.aws/credentials`) to the files in the specified environment. Alternatively, use `ase <env-name> env` to set the `AWS_CONFIG_FILE` environment variable to point to the config file in that environment.
+You can switch environments using `ase <env-name>` which by default activates the environment globally (by updating symlinks from the standard AWS config files `~/.aws/config` and `~/.aws/credentials` to the files in the specified environment). Alternatively, use `ase --session <env-name>` to activate the environment for the current terminal session only (by setting `AWS_CONFIG_FILE` and `AWS_SHARED_CREDENTIALS_FILE`).
 
 The AWS part of the prompt displays a cloud icon on an (AWS) orange background together with the value of your `$AWS_PROFILE` environment variable and optionally `$AWS_ENV`.
 Should you have a `$AWS_PROMPT` variable set, it will be displayed instead.
@@ -54,9 +54,15 @@ After installation, restart your terminal or run `source ~/.zshrc`.
 The easytocloud plugin extends the standard AWS plugin with additional commands for managing AWS environments:
 
 ### Environment Commands
-- `ase <env-name> [link|env]` - AWS Set Environment (with tab completion)
-  - `link` (default): Creates global symlinks to environment config/credentials
-  - `env`: Sets environment variables for current shell only
+- `ase [--global|--session] <env-name>` - AWS Set Environment (with tab completion)
+  - `--global` (default): Activates the environment globally via symlinks — affects all terminals
+  - `--session`: Activates the environment for this terminal session only via environment variables
+  - When called without a valid environment name, lists available environments with indicators:
+    - `*` (green) — active in both this session and globally
+    - `>` (yellow) — active in this session only
+    - `~` (blue) — active globally, but this session uses a different environment
+    - A legend is shown automatically when the session and global environments differ
+  - The legacy positional options `link` (use `--global`) and `env` (use `--session`) are deprecated
 - `age` - AWS Get Environment (shows current environment)
 - `acc` - AWS Clear Credentials (removes all AWS credential variables)
 
