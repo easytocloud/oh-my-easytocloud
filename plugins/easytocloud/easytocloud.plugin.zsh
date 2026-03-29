@@ -122,7 +122,8 @@ sso_role_name = ${_ase_sso_role_name}
 region = ${_ase_sso_region}
 EOF
             echo "${fg[green]}SSO config written (session: ${_ase_sso_session_name})${reset_color}"
-            echo "Next: aws sso login --profile sso-browser  then  sso-config-generator"
+            echo "Next run the command below to log in and generate credentials for this environment:"
+            echo "ase --session ${env_name} && aws sso login --profile sso-browser && uvx sso-config-generator"
         fi
 
         return 0
