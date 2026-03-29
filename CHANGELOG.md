@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.3.0...v1.4.0) (2026-03-29)
+
+
+### Features
+
+* add ase --add to create new environments; update docs ([1272920](https://github.com/easytocloud/oh-my-easytocloud/commit/127292067962aa9c1bd2ee4e51ad1db3ae405be8))
+
 # [1.3.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.2.8...v1.3.0) (2026-03-27)
 
 
