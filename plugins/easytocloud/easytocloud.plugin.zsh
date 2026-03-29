@@ -45,16 +45,12 @@ function aws_environments() {
 }
 
 function ase() {
-    _check_aws_envs || return 1
-
-    local -a available_environments
-    available_environments=($(_aws_environments))
-
     # Parse arguments: env name is the non-option arg; scope can be --global/--session
     # or legacy positional link/env (deprecated)
-    local env_name="" named_scope="" positional_scope=""
+    local env_name="" named_scope="" positional_scope="" do_add=0
     for arg in "$@"; do
         case "$arg" in
+            --add)     do_add=1 ;;
             --global)  named_scope="global" ;;
             --session) named_scope="session" ;;
             link)      positional_scope="link" ;;
@@ -72,6 +68,27 @@ function ase() {
                 ;;
         esac
     done
+
+    if (( do_add )); then
+        if [[ -z "$env_name" ]]; then
+            echo "${fg[red]}Error: ase --add requires an environment name${reset_color}"
+            return 1
+        fi
+        local env_dir="${HOME}/.aws/aws-envs/${env_name}"
+        if [[ -d "$env_dir" ]]; then
+            echo "${fg[red]}Error: environment '${env_name}' already exists${reset_color}"
+            return 1
+        fi
+        mkdir -p "$env_dir"
+        touch "${env_dir}/config" "${env_dir}/credentials"
+        echo "${fg[green]}Created environment '${env_name}'${reset_color}"
+        return 0
+    fi
+
+    _check_aws_envs || return 1
+
+    local -a available_environments
+    available_environments=($(_aws_environments))
 
     # Conflict: both a named scope option and a legacy positional scope
     if [[ -n "$named_scope" && -n "$positional_scope" ]]; then
@@ -99,7 +116,7 @@ function ase() {
         global_env=$(_get_global_env)
         session_env="${AWS_ENV}"
 
-        echo "Usage: ase [--global|--session] <env-name>"
+        echo "Usage: ase [--global|--session] <env-name>  or  ase --add <env-name>"
         echo "Available environments:"
         local env prefix
         for env in ${available_environments}; do

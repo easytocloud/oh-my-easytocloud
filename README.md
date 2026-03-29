@@ -57,6 +57,7 @@ The easytocloud plugin extends the standard AWS plugin with additional commands 
 - `ase [--global|--session] <env-name>` - AWS Set Environment (with tab completion)
   - `--global` (default): Activates the environment globally via symlinks — affects all terminals
   - `--session`: Activates the environment for this terminal session only via environment variables
+  - `--add <env-name>`: Creates a new empty environment with blank `config` and `credentials` files
   - When called without a valid environment name, lists available environments with indicators:
     - `*` (green) — active in both this session and globally
     - `>` (yellow) — active in this session only
