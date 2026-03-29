@@ -82,6 +82,49 @@ function ase() {
         mkdir -p "$env_dir"
         touch "${env_dir}/config" "${env_dir}/credentials"
         echo "${fg[green]}Created environment '${env_name}'${reset_color}"
+
+        echo -n "Does this environment use AWS SSO? [y/N] "
+        read -r _ase_use_sso
+        if [[ "$_ase_use_sso" =~ ^[Yy]$ ]]; then
+            local _ase_sso_start_url _ase_sso_session_name _ase_sso_account_id _ase_sso_role_name _ase_sso_region
+
+            echo -n "SSO start URL (e.g. https://myorg.awsapps.com/start): "
+            read -r _ase_sso_start_url
+
+            # Derive session name from org prefix in https://<org>.awsapps.com/start
+            if [[ "$_ase_sso_start_url" =~ ^https://([^.]+)\.awsapps\.com/ ]]; then
+                _ase_sso_session_name="${match[1]}"
+            else
+                _ase_sso_session_name="sso"
+            fi
+
+            echo -n "Main account ID (for sso-browser): "
+            read -r _ase_sso_account_id
+
+            echo -n "Role name for sso-browser profile [AdministratorAccess]: "
+            read -r _ase_sso_role_name
+            _ase_sso_role_name="${_ase_sso_role_name:-AdministratorAccess}"
+
+            echo -n "AWS region [eu-west-1]: "
+            read -r _ase_sso_region
+            _ase_sso_region="${_ase_sso_region:-eu-west-1}"
+
+            cat > "${env_dir}/config" << EOF
+[sso-session ${_ase_sso_session_name}]
+sso_region = ${_ase_sso_region}
+sso_start_url = ${_ase_sso_start_url}
+sso_registration_scopes = sso:account:access
+
+[profile sso-browser]
+sso_session = ${_ase_sso_session_name}
+sso_account_id = ${_ase_sso_account_id}
+sso_role_name = ${_ase_sso_role_name}
+region = ${_ase_sso_region}
+EOF
+            echo "${fg[green]}SSO config written (session: ${_ase_sso_session_name})${reset_color}"
+            echo "Next: aws sso login --profile sso-browser  then  sso-config-generator"
+        fi
+
         return 0
     fi
 
