@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.4.0...v1.5.0) (2026-03-29)
+
+
+### Features
+
+* prompt for SSO config when adding a new environment ([bfe2b35](https://github.com/easytocloud/oh-my-easytocloud/commit/bfe2b35fd5f0e630a185087828532f85ebee1fc6))
+
 # [1.4.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.3.0...v1.4.0) (2026-03-29)
 
 
