@@ -1,3 +1,10 @@
+## [1.5.1](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.5.0...v1.5.1) (2026-03-29)
+
+
+### Bug Fixes
+
+* updated SSO instructions ([8702265](https://github.com/easytocloud/oh-my-easytocloud/commit/87022654e8069aa11fef8cc3941b0938af0d6d12))
+
 # [1.5.0](https://github.com/easytocloud/oh-my-easytocloud/compare/v1.4.0...v1.5.0) (2026-03-29)
 
 
