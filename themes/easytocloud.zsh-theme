@@ -57,9 +57,22 @@ get_ec2_instance_id() {
 }
 
 # Special Powerline characters
+#
+# The glyphs below are written as \u escapes so they render correctly
+# regardless of the encoding this file is viewed in. Correctly *encoding*
+# that escape at runtime requires a UTF-8-aware locale to be active; if the
+# ambient LC_ALL/LC_CTYPE is already UTF-8 (en_US.UTF-8, C.utf8, ...) we
+# leave it alone, and only fall back to whatever UTF-8 locale the system
+# actually has installed (via `locale -a`) when it isn't. Computed once and
+# cached, since prompt_git re-runs this on every prompt draw.
+_UTF8_LOCALE=""
+case ${(L)${LC_ALL:-${LC_CTYPE:-$LANG}}} in
+  *utf-8*|*utf8*) ;;
+  *) _UTF8_LOCALE=$(locale -a 2>/dev/null | grep -im1 'utf-\?8') ;;
+esac
 
 () {
-  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  [[ -n "$_UTF8_LOCALE" ]] && local LC_ALL="" LC_CTYPE="$_UTF8_LOCALE"
   # NOTE: This segment separator character is correct.  In 2012, Powerline changed
   # the code points they use for their special characters. This is the new code point.
   # If this is not working for you, you probably have an old version of the
@@ -120,7 +133,7 @@ prompt_git() {
   fi
   local PL_BRANCH_CHAR
   () {
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+    [[ -n "$_UTF8_LOCALE" ]] && local LC_ALL="" LC_CTYPE="$_UTF8_LOCALE"
     PL_BRANCH_CHAR=$'\ue0a0'         # 
   }
   local ref dirty mode repo_path
